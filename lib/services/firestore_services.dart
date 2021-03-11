@@ -10,7 +10,7 @@ class FirestoreServices {
     @required String programName,
     @required String programImagePath,
     @required String totalFunds,
-    @required String fundRaised,
+    String fundRaised = '0',
   }) async {
     try {
       await _programDonation.add({

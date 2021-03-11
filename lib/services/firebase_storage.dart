@@ -1,8 +1,6 @@
 import 'dart:html';
 
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:prawitama_care_admin/common/utils.dart';
 
 class StorageServices {
   static void uploadImage({@required Function(File file) onSelected}) {
@@ -20,15 +18,14 @@ class StorageServices {
     });
   }
 
-  static void uploadToStorage(String programName) async {
-    uploadImage(onSelected: (file) async {
-      Reference ref = FirebaseStorage.instance
-          .refFromURL('gs://prawitama-care.appspot.com/')
-          .child(programName);
+  // static void uploadToStorage(String programName) async {
+  //   uploadImage(onSelected: (file) async {
+  //     Reference ref = FirebaseStorage.instance
+  //         .refFromURL('gs://prawitama-care.appspot.com/').child();
 
-      UploadTask uploadTask = ref.putBlob(file);
-      var dowurl = await (await uploadTask).ref.getDownloadURL();
-      imageUrl = dowurl.toString();
-    });
-  }
+  //     UploadTask uploadTask = ref.putBlob(file);
+  //     var dowurl = await (await uploadTask).ref.getDownloadURL();
+  //     print(dowurl);
+  //   });
+  // }
 }

@@ -29,8 +29,11 @@ dependencies:
   firebase_storage: ^8.0.0
   google_fonts: ^2.0.0
   image_picker: ^0.7.2+1
+  intl: ^0.17.0
+  provider: ^5.0.0
   responsive_builder: ^0.3.0
   url_strategy: ^0.2.0
+  uuid: ^3.0.1
 
 dev_dependencies:
   flutter_test:
