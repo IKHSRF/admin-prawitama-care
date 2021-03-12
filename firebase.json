@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "admin-prawitama-care",
     "public": "build/web",
     "ignore": [
       "firebase.json",
