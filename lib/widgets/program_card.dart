@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:prawitama_care_admin/common/utils.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -23,6 +24,10 @@ class ProgramCard extends StatefulWidget {
 }
 
 class _ProgramCardState extends State<ProgramCard> {
+  String _formatNumber(String number) =>
+      NumberFormat.decimalPattern('id').format(int.parse(number));
+  String get _currency =>
+      NumberFormat.compactSimpleCurrency(locale: 'id').currencySymbol;
   bool isHover = false;
   @override
   Widget build(BuildContext context) {
@@ -114,7 +119,7 @@ class _ProgramCardState extends State<ProgramCard> {
                         style: subtitleTextStyle,
                       ),
                       Text(
-                        widget.fundRaised,
+                        _formatNumber(widget.fundRaised),
                         style: Theme.of(context).textTheme.subtitle1.copyWith(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
@@ -153,7 +158,7 @@ class _ProgramCardState extends State<ProgramCard> {
                       Align(
                         alignment: Alignment.bottomRight,
                         child: Text(
-                          "6% dari Rp ${widget.totalFunds}",
+                          "0% dari Rp ${_formatNumber(widget.totalFunds)}",
                           style: subtitleTextStyle,
                         ),
                       ),
