@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           textTheme: textTheme,
         ),
-        initialRoute: HomePage.id,
+        initialRoute: LoginPage.id,
         routes: {
           HomePage.id: (_) => HomePage(),
           Donation.id: (_) => Donation(),

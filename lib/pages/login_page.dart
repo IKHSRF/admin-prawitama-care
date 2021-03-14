@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:prawitama_care_admin/common/utils.dart';
+import 'package:prawitama_care_admin/services/firebase_auth.dart';
 import 'package:prawitama_care_admin/widgets/custom_appbar_desktop.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+
+import 'home_page.dart';
 
 class LoginPage extends StatelessWidget {
   static const String id = '/login';
   @override
   Widget build(BuildContext context) {
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
     return ResponsiveBuilder(
       builder: (context, sizingInformation) {
         return Scaffold(
@@ -39,12 +44,14 @@ class LoginPage extends StatelessWidget {
                   ),
                   SizedBox(height: defaultPadding * 6),
                   TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                       hintText: 'Alamat Email',
                     ),
                   ),
                   SizedBox(height: defaultPadding * 4),
                   TextField(
+                    controller: passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       hintText: 'Password',
@@ -52,7 +59,20 @@ class LoginPage extends StatelessWidget {
                   ),
                   SizedBox(height: defaultPadding * 4),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      String result =
+                          await FirebaseAuthServices.loginWithEmailAndPassword(
+                        emailController.text.trim(),
+                        passwordController.text.trim(),
+                      );
+                      if (result != 'berhasil') {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(result)),
+                        );
+                      } else {
+                        Navigator.pushNamed(context, HomePage.id);
+                      }
+                    },
                     style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all<Color>(buttonColor),
