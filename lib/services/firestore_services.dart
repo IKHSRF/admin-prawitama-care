@@ -1,32 +1,43 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import 'package:prawitama_care_admin/models/donation.dart';
 
 class FirestoreServices {
-  static FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  static CollectionReference _programDonation = _firestore.collection('donasi');
+  CollectionReference donationReference =
+      FirebaseFirestore.instance.collection('donation');
 
-  static Future<String> addDonationProgram({
-    @required String programDetail,
-    @required String programName,
-    @required String programImagePath,
-    @required String totalFunds,
-    String fundRaised = '0',
-  }) async {
+  Stream<List<Donation>> getDonationData() =>
+      donationReference.snapshots().map((snapshot) =>
+          snapshot.docs.map((doc) => Donation.fromFirestore(doc)).toList());
+
+  Future<String> addDonation(Donation donation) async {
     try {
-      await _programDonation.add({
-        'programName': programName,
-        'programDetail': programDetail,
-        'programImagePath': programImagePath,
-        'totalFunds': totalFunds,
-        'fundRaised': fundRaised,
-      });
-      return 'berhasil';
+      await donationReference.add(donation.toFirestore());
+      return 'ok';
     } catch (error) {
+      print(error);
       return error.message;
     }
   }
 
-  static Stream<QuerySnapshot> getDonationProgram() {
-    return _programDonation.snapshots();
+  Future<String> removeDonation(String id) async {
+    try {
+      await donationReference.doc(id).delete();
+      return 'ok';
+    } catch (error) {
+      print(error);
+      return error.message;
+    }
+  }
+
+  Future<String> updateDonation(String id, Donation donation) async {
+    try {
+      await donationReference
+          .doc(id)
+          .set(donation.toFirestore(), SetOptions(merge: true));
+      return 'ok';
+    } catch (error) {
+      print(error);
+      return error.message;
+    }
   }
 }
