@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => DonationProvider(),
       child: MaterialApp(
+        title: "Prawitama Care Admin",
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           textTheme: textTheme,

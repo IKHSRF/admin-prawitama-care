@@ -32,7 +32,7 @@ class _EditDonationState extends State<EditDonation> {
               : CustomAppBarDesktopTablet(),
           body: FutureBuilder(
               future: FirebaseFirestore.instance
-                  .collection('donation')
+                  .collection('donasi')
                   .doc(ModalRoute.of(context).settings.arguments)
                   .get(),
               builder: (context, snapshot) {

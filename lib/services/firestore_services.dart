@@ -3,7 +3,7 @@ import 'package:prawitama_care_admin/models/donation.dart';
 
 class FirestoreServices {
   CollectionReference donationReference =
-      FirebaseFirestore.instance.collection('donation');
+      FirebaseFirestore.instance.collection('donasi');
 
   Stream<List<Donation>> getDonationData() =>
       donationReference.snapshots().map((snapshot) =>
