@@ -1,6 +1,7 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:prawitama_care_admin/common/utils.dart';
 import 'package:prawitama_care_admin/providers/donation_provider.dart';
 import 'package:prawitama_care_admin/services/firebase_storage.dart';
@@ -20,8 +21,17 @@ class Donation extends StatefulWidget {
 class _DonationState extends State<Donation> {
   @override
   Widget build(BuildContext context) {
+    final MoneyMaskedTextController totalFund = MoneyMaskedTextController(
+      thousandSeparator: ',',
+      precision: 3,
+      initialValue: 0,
+    );
+    final TextEditingController programName = TextEditingController();
+    final TextEditingController programDetail = TextEditingController();
+
     var uuid = Uuid();
-    final donationProvider = Provider.of<DonationProvider>(context);
+    final donationProvider =
+        Provider.of<DonationProvider>(context, listen: false);
 
     return ResponsiveBuilder(
       builder: (context, sizingInformation) {
@@ -41,31 +51,32 @@ class _DonationState extends State<Donation> {
                   Expanded(
                     child: Column(
                       children: [
-                        InkWell(
-                          onTap: () {
-                            StorageServices.uploadImage(
-                              onSelected: (file) async {
-                                Reference ref = FirebaseStorage.instance
-                                    .refFromURL(
-                                        'gs://prawitama-care.appspot.com/')
-                                    .child(
-                                      uuid.v4(),
-                                    );
+                        Consumer<DonationProvider>(
+                          builder: (context, donation, _) => InkWell(
+                            onTap: () {
+                              StorageServices.uploadImage(
+                                onSelected: (file) async {
+                                  Reference ref = FirebaseStorage.instance
+                                      .refFromURL(
+                                          'gs://prawitama-care.appspot.com/')
+                                      .child(
+                                        uuid.v4(),
+                                      );
 
-                                UploadTask uploadTask = ref.putBlob(file);
-                                var dowurl = await (await uploadTask)
-                                    .ref
-                                    .getDownloadURL();
-                                donationProvider.changeProgramImagePath =
-                                    dowurl;
-                              },
-                            );
-                          },
-                          child: Image.network(
-                            donationProvider.programImagePath,
-                            width: 500,
-                            height: 500,
-                            fit: BoxFit.fill,
+                                  UploadTask uploadTask = ref.putBlob(file);
+                                  var dowurl = await (await uploadTask)
+                                      .ref
+                                      .getDownloadURL();
+                                  donation.changeProgramImagePath = dowurl;
+                                },
+                              );
+                            },
+                            child: Image.network(
+                              donation.programImagePath,
+                              width: 500,
+                              height: 500,
+                              fit: BoxFit.fill,
+                            ),
                           ),
                         ),
                       ],
@@ -101,15 +112,12 @@ class _DonationState extends State<Donation> {
                             child: TextField(
                               keyboardType: TextInputType.number,
                               maxLines: 1,
+                              controller: totalFund,
                               decoration: InputDecoration(
                                 prefixText: 'Rp ',
                                 hintText: 'IDR',
                                 border: InputBorder.none,
                               ),
-                              onChanged: (value) {
-                                donationProvider.changeTotalFunds =
-                                    int.parse(value);
-                              },
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
                                     RegExp(r'[0-9]')),
@@ -137,13 +145,11 @@ class _DonationState extends State<Donation> {
                             ),
                             margin: EdgeInsets.only(top: defaultPadding * 2),
                             child: TextField(
+                              controller: programName,
                               decoration: InputDecoration(
                                 hintText: 'Nama Program',
                                 border: InputBorder.none,
                               ),
-                              onChanged: (value) {
-                                donationProvider.changeProgramName = value;
-                              },
                             ),
                           ),
                           Container(
@@ -159,13 +165,11 @@ class _DonationState extends State<Donation> {
                             ),
                             margin: EdgeInsets.only(top: defaultPadding * 2),
                             child: TextField(
+                              controller: programDetail,
                               decoration: InputDecoration(
                                 hintText: 'Detail Program',
                                 border: InputBorder.none,
                               ),
-                              onChanged: (value) {
-                                donationProvider.changeProgramDetail = value;
-                              },
                             ),
                           ),
                           SizedBox(height: defaultPadding * 6),
@@ -183,6 +187,14 @@ class _DonationState extends State<Donation> {
                                 ),
                               ),
                               onPressed: () {
+                                donationProvider.changeTotalFunds = int.parse(
+                                    totalFund.text.replaceAll(
+                                        new RegExp(r'[^\w\s]+'), ''));
+                                donationProvider.changeProgramName =
+                                    programName.text;
+                                donationProvider.changeProgramDetail =
+                                    programDetail.text;
+
                                 donationProvider.addDonation(context);
                               },
                             ),

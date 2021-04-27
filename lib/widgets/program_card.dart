@@ -9,6 +9,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 class ProgramCard extends StatefulWidget {
   const ProgramCard({
     Key key,
+    this.page = false,
     @required this.id,
     @required this.programName,
     @required this.programDetail,
@@ -17,6 +18,7 @@ class ProgramCard extends StatefulWidget {
     @required this.programImagePath,
   }) : super(key: key);
 
+  final bool page;
   final String id;
   final String programName;
   final String programDetail;
@@ -55,7 +57,7 @@ class _ProgramCardState extends State<ProgramCard> {
             duration: Duration(milliseconds: 200),
             margin: EdgeInsets.all(defaultPadding * 2),
             width: 300,
-            height: 520,
+            height: 550,
             decoration: BoxDecoration(
               color: Colors.white,
               boxShadow: [
@@ -171,41 +173,63 @@ class _ProgramCardState extends State<ProgramCard> {
                   ),
                 ),
                 SizedBox(height: 50.0),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: PopupMenuButton(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(Icons.dehaze),
-                    ),
-                    onSelected: (value) {
-                      if (value == 'delete') {
-                        donationProvider.deleteDonation(context, widget.id);
-                      } else {
-                        Navigator.pushNamed(
-                          context,
-                          EditDonation.id,
-                          arguments: widget.id,
-                        );
-                      }
-                    },
-                    itemBuilder: (context) {
-                      return <PopupMenuEntry>[
-                        PopupMenuItem(
-                          child: Text("Edit"),
-                          value: "edit",
-                        ),
-                        PopupMenuItem(
-                          child: Text(
-                            "Delete",
-                            style: TextStyle(color: Colors.red),
+                (widget.page == false)
+                    ? Align(
+                        alignment: Alignment.bottomRight,
+                        child: PopupMenuButton(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(Icons.dehaze),
                           ),
-                          value: "delete",
+                          onSelected: (value) {
+                            if (value == 'delete') {
+                              donationProvider.deleteDonation(
+                                  context, widget.id);
+                            } else if (value == 'selesai') {
+                              donationProvider.createReport(
+                                context,
+                                widget.programName,
+                                widget.programDetail,
+                                widget.programImagePath,
+                                int.parse(widget.totalFunds),
+                                int.parse(widget.fundRaised),
+                                widget.id,
+                              );
+                            } else {
+                              Navigator.pushNamed(
+                                context,
+                                EditDonation.id,
+                                arguments: widget.id,
+                              );
+                            }
+                          },
+                          itemBuilder: (context) {
+                            return <PopupMenuEntry>[
+                              PopupMenuItem(
+                                child: Text(
+                                  "Program Selesai",
+                                ),
+                                value: "selesai",
+                              ),
+                              PopupMenuItem(
+                                child: Text(
+                                  "Edit",
+                                  style: TextStyle(color: Colors.green),
+                                ),
+                                value: "edit",
+                              ),
+                              PopupMenuItem(
+                                child: Text(
+                                  "Delete",
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                                value: "delete",
+                              ),
+                            ];
+                          },
                         ),
-                      ];
-                    },
-                  ),
-                ),
+                      )
+                    : SizedBox(),
               ],
             ),
           );

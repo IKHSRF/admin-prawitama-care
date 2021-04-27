@@ -4,6 +4,7 @@ import 'package:prawitama_care_admin/pages/donation_page.dart';
 import 'package:prawitama_care_admin/pages/edit_page.dart';
 import 'package:prawitama_care_admin/pages/login_page.dart';
 import 'package:prawitama_care_admin/pages/home_page.dart';
+import 'package:prawitama_care_admin/pages/report_page.dart';
 import 'package:prawitama_care_admin/providers/donation_provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
           Donation.id: (_) => Donation(),
           LoginPage.id: (_) => LoginPage(),
           EditDonation.id: (_) => EditDonation(),
+          ReportPage.id: (_) => ReportPage(),
         },
       ),
     );
