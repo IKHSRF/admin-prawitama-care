@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:prawitama_care_admin/common/utils.dart';
 import 'package:prawitama_care_admin/pages/donation_page.dart';
 import 'package:prawitama_care_admin/pages/home_page.dart';
+import 'package:prawitama_care_admin/pages/report_page.dart';
 
 class CustomAppBarDesktopTablet extends StatefulWidget
     with PreferredSizeWidget {
@@ -98,7 +99,7 @@ class _CustomAppBarDesktopTabletState extends State<CustomAppBarDesktopTablet> {
             onTap: () {
               setState(() {
                 pageNumber = 2;
-                // Navigator.pushNamed(context, ReportPage.id);
+                Navigator.pushNamed(context, ReportPage.id);
               });
             },
             child: Center(

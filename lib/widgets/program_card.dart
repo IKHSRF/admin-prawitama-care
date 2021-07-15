@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:prawitama_care_admin/common/utils.dart';
+import 'package:prawitama_care_admin/pages/edit_page.dart';
+import 'package:prawitama_care_admin/providers/donation_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class ProgramCard extends StatefulWidget {
   const ProgramCard({
     Key key,
+    this.page = false,
+    @required this.id,
     @required this.programName,
     @required this.programDetail,
     @required this.totalFunds,
@@ -13,6 +18,8 @@ class ProgramCard extends StatefulWidget {
     @required this.programImagePath,
   }) : super(key: key);
 
+  final bool page;
+  final String id;
   final String programName;
   final String programDetail;
   final String totalFunds;
@@ -26,11 +33,11 @@ class ProgramCard extends StatefulWidget {
 class _ProgramCardState extends State<ProgramCard> {
   String _formatNumber(String number) =>
       NumberFormat.decimalPattern('id').format(int.parse(number));
-  String get _currency =>
-      NumberFormat.compactSimpleCurrency(locale: 'id').currencySymbol;
   bool isHover = false;
   @override
   Widget build(BuildContext context) {
+    final donationProvider = Provider.of<DonationProvider>(context);
+
     return InkWell(
       onTap: () {},
       onHover: (value) {
@@ -50,7 +57,7 @@ class _ProgramCardState extends State<ProgramCard> {
             duration: Duration(milliseconds: 200),
             margin: EdgeInsets.all(defaultPadding * 2),
             width: 300,
-            height: 520,
+            height: 550,
             decoration: BoxDecoration(
               color: Colors.white,
               boxShadow: [
@@ -142,7 +149,7 @@ class _ProgramCardState extends State<ProgramCard> {
                             borderRadius: BorderRadius.circular(5),
                             child: AnimatedContainer(
                               height: 10,
-                              width: 500 * 0.2,
+                              width: 500 * num.parse(widget.fundRaised),
                               duration: Duration(microseconds: 500),
                               decoration: BoxDecoration(
                                 color: Colors.lightGreen,
@@ -158,13 +165,71 @@ class _ProgramCardState extends State<ProgramCard> {
                       Align(
                         alignment: Alignment.bottomRight,
                         child: Text(
-                          "0% dari Rp ${_formatNumber(widget.totalFunds)}",
+                          "Rp ${widget.fundRaised} dari Rp ${_formatNumber(widget.totalFunds)}",
                           style: subtitleTextStyle,
                         ),
                       ),
                     ],
                   ),
                 ),
+                SizedBox(height: 50.0),
+                (widget.page == false)
+                    ? Align(
+                        alignment: Alignment.bottomRight,
+                        child: PopupMenuButton(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(Icons.dehaze),
+                          ),
+                          onSelected: (value) {
+                            if (value == 'delete') {
+                              donationProvider.deleteDonation(
+                                  context, widget.id);
+                            } else if (value == 'selesai') {
+                              donationProvider.createReport(
+                                context,
+                                widget.programName,
+                                widget.programDetail,
+                                widget.programImagePath,
+                                int.parse(widget.totalFunds),
+                                int.parse(widget.fundRaised),
+                                widget.id,
+                              );
+                            } else {
+                              Navigator.pushNamed(
+                                context,
+                                EditDonation.id,
+                                arguments: widget.id,
+                              );
+                            }
+                          },
+                          itemBuilder: (context) {
+                            return <PopupMenuEntry>[
+                              PopupMenuItem(
+                                child: Text(
+                                  "Program Selesai",
+                                ),
+                                value: "selesai",
+                              ),
+                              PopupMenuItem(
+                                child: Text(
+                                  "Edit",
+                                  style: TextStyle(color: Colors.green),
+                                ),
+                                value: "edit",
+                              ),
+                              PopupMenuItem(
+                                child: Text(
+                                  "Delete",
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                                value: "delete",
+                              ),
+                            ];
+                          },
+                        ),
+                      )
+                    : SizedBox(),
               ],
             ),
           );

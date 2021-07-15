@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prawitama_care_admin/common/utils.dart';
 import 'package:prawitama_care_admin/services/firebase_auth.dart';
-import 'package:prawitama_care_admin/widgets/custom_appbar_desktop.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 import 'home_page.dart';
@@ -15,8 +14,6 @@ class LoginPage extends StatelessWidget {
     return ResponsiveBuilder(
       builder: (context, sizingInformation) {
         return Scaffold(
-          appBar:
-              (sizingInformation.isMobile) ? null : CustomAppBarDesktopTablet(),
           body: Center(
             child: Container(
               margin: EdgeInsets.only(top: defaultPadding * 2),
