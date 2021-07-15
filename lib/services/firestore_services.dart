@@ -16,7 +16,7 @@ class FirestoreServices {
       reportReference.snapshots().map((snapshot) =>
           snapshot.docs.map((doc) => Report.fromFirestore(doc)).toList());
 
-  Future<String> addDonation(Donation donation) async {
+  Future<String?> addDonation(Donation donation) async {
     try {
       await donationReference.add(donation.toFirestore());
       return 'ok';
@@ -26,7 +26,7 @@ class FirestoreServices {
     }
   }
 
-  Future<String> addReport(Report report) async {
+  Future<String?> addReport(Report report) async {
     try {
       await reportReference.add(report.toFirestore());
 
@@ -37,7 +37,7 @@ class FirestoreServices {
     }
   }
 
-  Future<String> removeDonation(String id) async {
+  Future<String?> removeDonation(String? id) async {
     try {
       await donationReference.doc(id).delete();
       return 'ok';
@@ -47,7 +47,7 @@ class FirestoreServices {
     }
   }
 
-  Future<String> updateDonation(String id, Donation donation) async {
+  Future<String?> updateDonation(String? id, Donation donation) async {
     try {
       await donationReference
           .doc(id)

@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Donation {
-  final String id;
-  final String programName;
-  final String programDetail;
-  final String programImagePath;
-  final int totalFunds;
-  final int fundRaised;
+  final String? id;
+  final String? programName;
+  final String? programDetail;
+  final String? programImagePath;
+  final int? totalFunds;
+  final int? fundRaised;
 
   Donation({
     this.id,
@@ -18,7 +18,7 @@ class Donation {
   });
 
   factory Donation.fromFirestore(DocumentSnapshot snapshot) {
-    Map data = snapshot.data();
+    Map data = snapshot.data()!;
 
     return Donation(
       id: snapshot.id,

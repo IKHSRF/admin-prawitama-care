@@ -43,7 +43,7 @@ class _EditDonationState extends State<EditDonation> {
           body: FutureBuilder(
               future: FirebaseFirestore.instance
                   .collection('donasi')
-                  .doc(ModalRoute.of(context).settings.arguments)
+                  .doc(ModalRoute.of(context)!.settings.arguments as String?)
                   .get(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
@@ -109,7 +109,7 @@ class _EditDonationState extends State<EditDonation> {
                                   "Masukan jumlah donasi yang diperlukan",
                                   style: Theme.of(context)
                                       .textTheme
-                                      .caption
+                                      .caption!
                                       .copyWith(color: Colors.black),
                                 ),
                                 Container(

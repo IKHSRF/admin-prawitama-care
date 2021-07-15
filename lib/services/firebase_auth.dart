@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class FirebaseAuthServices {
   static FirebaseAuth _auth = FirebaseAuth.instance;
 
-  static Future<String> loginWithEmailAndPassword(
+  static Future<String?> loginWithEmailAndPassword(
     String email,
     String password,
   ) async {
@@ -16,5 +16,5 @@ class FirebaseAuthServices {
     }
   }
 
-  static Stream<User> get firebaseUserStream => _auth.authStateChanges();
+  static Stream<User?> get firebaseUserStream => _auth.authStateChanges();
 }

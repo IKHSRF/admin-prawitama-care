@@ -94,7 +94,7 @@ class _DonationState extends State<Donation> {
                             "Masukan jumlah donasi yang diperlukan",
                             style: Theme.of(context)
                                 .textTheme
-                                .caption
+                                .caption!
                                 .copyWith(color: Colors.black),
                           ),
                           Container(

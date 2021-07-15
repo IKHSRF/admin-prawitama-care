@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Report {
-  final String id;
-  final String programName;
-  final String programDetail;
-  final String programImagePath;
-  final int totalFunds;
-  final int fundRaised;
+  final String? id;
+  final String? programName;
+  final String? programDetail;
+  final String? programImagePath;
+  final int? totalFunds;
+  final int? fundRaised;
 
   Report({
     this.id,
@@ -18,7 +18,7 @@ class Report {
   });
 
   factory Report.fromFirestore(DocumentSnapshot snapshot) {
-    Map data = snapshot.data();
+    Map data = snapshot.data()!;
 
     return Report(
       id: snapshot.id,

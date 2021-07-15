@@ -11,19 +11,19 @@ class DonationProvider with ChangeNotifier {
 
   String _defaultImage =
       'https://firebasestorage.googleapis.com/v0/b/prawitama-care.appspot.com/o/Motivational-Quotes-ID-17.32817bcc.png?alt=media&token=1f77e79c-2905-44dc-aeb4-62e7bea76fab';
-  String _programName;
-  String _programDetail;
+  String? _programName;
+  String? _programDetail;
   String _programImagePath =
       'https://firebasestorage.googleapis.com/v0/b/prawitama-care.appspot.com/o/Motivational-Quotes-ID-17.32817bcc.png?alt=media&token=1f77e79c-2905-44dc-aeb4-62e7bea76fab';
-  int _totalFunds;
+  int? _totalFunds;
   int _fundRaised = 0;
 
   //getter
   String get defaultImage => _defaultImage;
-  String get programName => _programName;
-  String get programDetail => _programDetail;
+  String? get programName => _programName;
+  String? get programDetail => _programDetail;
   String get programImagePath => _programImagePath;
-  int get totalFunds => _totalFunds;
+  int? get totalFunds => _totalFunds;
   int get fundRaised => _fundRaised;
 
   Stream<List<Donation>> get donation => firestore.getDonationData();
@@ -88,7 +88,7 @@ class DonationProvider with ChangeNotifier {
         return Navigator.popAndPushNamed(context, HomePage.id);
       } else {
         return ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(result)),
+          SnackBar(content: Text(result!)),
         );
       }
     }
@@ -96,12 +96,12 @@ class DonationProvider with ChangeNotifier {
 
   createReport(
     BuildContext context,
-    String name,
-    String detail,
-    String imagePath,
+    String? name,
+    String? detail,
+    String? imagePath,
     int total,
     int raised,
-    String id,
+    String? id,
   ) async {
     var report = Report(
       programName: name,
@@ -121,29 +121,29 @@ class DonationProvider with ChangeNotifier {
       return Navigator.popAndPushNamed(context, HomePage.id);
     } else {
       return ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(result)),
+        SnackBar(content: Text(result!)),
       );
     }
   }
 
   updateDonation(
     BuildContext context,
-    String id,
-    DocumentSnapshot snapshot,
+    String? id,
+    DocumentSnapshot? snapshot,
   ) async {
     var donation = Donation(
       programName:
-          (_programName == '') ? snapshot.data()['programName'] : _programName,
+          (_programName == '') ? snapshot!.data()!['programName'] : _programName,
       programDetail: (_programDetail == '')
-          ? snapshot.data()['programDetail']
+          ? snapshot!.data()!['programDetail']
           : _programDetail,
       programImagePath: (_programImagePath == _defaultImage)
-          ? snapshot.data()['programImagePath']
+          ? snapshot!.data()!['programImagePath']
           : _programImagePath,
       totalFunds:
-          (_totalFunds == 0) ? snapshot.data()['totalFunds'] : _totalFunds,
+          (_totalFunds == 0) ? snapshot!.data()!['totalFunds'] : _totalFunds,
       fundRaised:
-          (_fundRaised == 0) ? snapshot.data()['fundRaised'] : _fundRaised,
+          (_fundRaised == 0) ? snapshot!.data()!['fundRaised'] : _fundRaised,
     );
 
     var result = await firestore.updateDonation(id, donation);
@@ -161,14 +161,14 @@ class DonationProvider with ChangeNotifier {
       return Navigator.popAndPushNamed(context, HomePage.id);
     } else {
       return ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(result)),
+        SnackBar(content: Text(result!)),
       );
     }
   }
 
   deleteDonation(
     BuildContext context,
-    String id,
+    String? id,
   ) async {
     var result = await firestore.removeDonation(id);
 
@@ -179,7 +179,7 @@ class DonationProvider with ChangeNotifier {
       return Navigator.popAndPushNamed(context, HomePage.id);
     } else {
       return ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(result)),
+        SnackBar(content: Text(result!)),
       );
     }
   }

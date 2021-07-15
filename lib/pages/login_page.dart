@@ -36,7 +36,7 @@ class LoginPage extends StatelessWidget {
                 children: [
                   Text(
                     "MASUK KE AKUN ANDA",
-                    style: Theme.of(context).textTheme.headline5.copyWith(
+                    style: Theme.of(context).textTheme.headline5!.copyWith(
                         color: Colors.black, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: defaultPadding * 6),
@@ -57,14 +57,14 @@ class LoginPage extends StatelessWidget {
                   SizedBox(height: defaultPadding * 4),
                   ElevatedButton(
                     onPressed: () async {
-                      String result =
+                      String? result =
                           await FirebaseAuthServices.loginWithEmailAndPassword(
                         emailController.text.trim(),
                         passwordController.text.trim(),
                       );
                       if (result != 'berhasil') {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(result)),
+                          SnackBar(content: Text(result!)),
                         );
                       } else {
                         Navigator.pushNamed(context, HomePage.id);
@@ -81,7 +81,7 @@ class LoginPage extends StatelessWidget {
                         "MASUK",
                         style: Theme.of(context)
                             .textTheme
-                            .button
+                            .button!
                             .copyWith(color: Colors.white),
                       ),
                     ),
